@@ -1,77 +1,64 @@
-
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Notion API",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/v1/blocks/{block_id}": {
-      "get": {
-        "summary": "Retrieve a block",
-        "operationId": "retrieveBlock",
-        "parameters": [
-          {
-            "name": "block_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Block"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden - Integration does not have read content capabilities"
-          },
-          "404": {
-            "description": "Not Found - Block does not exist or integration does not have access"
-          },
-          "429": {
-            "description": "Too Many Requests"
-          }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Retrieve a Block",
+  "description": "Retrieves a Block object using the specified ID. If the block has children, use the Retrieve block children endpoint to get the list of children. To retrieve page content for a specific page, use Retrieve block children with the page ID as block_id.",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "API endpoint for retrieving a block",
+      "value": "/v1/blocks/{block_id}"
+    },
+    "method": {
+      "type": "string",
+      "enum": ["GET"],
+      "description": "HTTP method used for the request"
+    },
+    "headers": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "Bearer token for authentication"
         }
-      }
+      },
+      "required": ["Authorization"]
+    },
+    "contentType": {
+      "type": "null"
+    },
+    "body": {
+      "type": "null"
+    },
+    "queryParameters": {
+      "type": "object",
+      "properties": {
+        "block_id": {
+          "type": "string",
+          "description": "The ID of the block to retrieve"
+        }
+      },
+      "required": ["block_id"]
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "description": "The type of object, always 'block'"
+        },
+        "id": {
+          "type": "string",
+          "description": "The ID of the block"
+        },
+        "has_children": {
+          "type": "boolean",
+          "description": "Whether the block has child blocks"
+        }
+      },
+      "required": ["object", "id", "has_children"]
     }
   },
-  "components": {
-    "schemas": {
-      "Block": {
-        "type": "object",
-        "properties": {
-          "object": {
-            "type": "string",
-            "example": "block"
-          },
-          "id": {
-            "type": "string"
-          },
-          "created_time": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "last_edited_time": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "has_children": {
-            "type": "boolean"
-          }
-        }
-      }
-    }
-  }
+  "required": ["endpoint", "method", "headers", "queryParameters", "response"],
+  "additionalProperties": false
 }

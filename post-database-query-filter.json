@@ -1,546 +1,86 @@
 
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Notion API",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/v1/databases/{database_id}/query": {
-      "post": {
-        "summary": "Filter database entries",
-        "parameters": [
-          {
-            "name": "database_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FilterRequestBody"
-              }
-            }
-          }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Filter Database Entries in Notion API", 
+  "description": "This schema defines the structure of the request body for filtering database entries in the Notion API. It allows you to specify conditions to limit the returned entries based on various property types and values.",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "API endpoint for filtering database entries",
+      "value": "/v1/databases/{database_id}/query"
+    },
+    "method": {
+      "type": "string", 
+      "enum": ["POST"],
+      "description": "HTTP method used for the request"
+    },
+    "headers": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "Bearer token for authentication"
         },
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          }
+        "Notion-Version": {
+          "type": "string",
+          "description": "Notion API version"
         }
-      }
+      },
+      "required": [
+        "Authorization",
+        "Notion-Version"
+      ]
+    },
+    "contentType": {
+      "type": "string",
+      "enum": ["application/json"],
+      "description": "Content type of the request body"
+    },
+    "body": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "type": "object",
+          "description": "Filter conditions to apply for the database query"
+        }
+      },
+      "required": ["filter"]
+    },
+    "queryParameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "string",
+          "description": "Object type"
+        },
+        "results": {
+          "type": "array",
+          "description": "Array of filtered database entries"
+        },
+        "next_cursor": {
+          "type": "string",
+          "description": "Cursor for fetching the next set of results"
+        }
+      },
+      "required": [
+        "object",
+        "results"
+      ]
     }
   },
-  "components": {
-    "schemas": {
-      "FilterRequestBody": {
-        "type": "object",
-        "properties": {
-          "filter": {
-            "$ref": "#/components/schemas/Filter"
-          }
-        }
-      },
-      "Filter": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/PropertyFilter"
-          },
-          {
-            "$ref": "#/components/schemas/CompoundFilter"
-          }
-        ]
-      },
-      "PropertyFilter": {
-        "type": "object",
-        "properties": {
-          "property": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": {
-          "$ref": "#/components/schemas/PropertyFilterCondition"
-        }
-      },
-      "CompoundFilter": {
-        "type": "object",
-        "properties": {
-          "and": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Filter"
-            }
-          },
-          "or": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Filter"
-            }
-          }
-        }
-      },
-      "PropertyFilterCondition": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/CheckboxFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/DateFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/FilesFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/FormulaFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/MultiSelectFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/NumberFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/PeopleFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/RelationFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/RichTextFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/RollupFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/SelectFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/StatusFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/TimestampFilterCondition"
-          },
-          {
-            "$ref": "#/components/schemas/IDFilterCondition"
-          }
-        ]
-      },
-      "CheckboxFilterCondition": {
-        "type": "object",
-        "properties": {
-          "checkbox": {
-            "type": "object",
-            "properties": {
-              "equals": {
-                "type": "boolean"
-              },
-              "does_not_equal": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "DateFilterCondition": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "object",
-            "properties": {
-              "after": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "before": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "equals": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              },
-              "next_month": {
-                "type": "object"
-              },
-              "next_week": {
-                "type": "object"
-              },
-              "next_year": {
-                "type": "object"
-              },
-              "on_or_after": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "on_or_before": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "past_month": {
-                "type": "object"
-              },
-              "past_week": {
-                "type": "object"
-              },
-              "past_year": {
-                "type": "object"
-              },
-              "this_week": {
-                "type": "object"
-              }
-            }
-          }
-        }
-      },
-      "FilesFilterCondition": {
-        "type": "object",
-        "properties": {
-          "files": {
-            "type": "object",
-            "properties": {
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "FormulaFilterCondition": {
-        "type": "object",
-        "properties": {
-          "formula": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/CheckboxFilterCondition"
-              },
-              {
-                "$ref": "#/components/schemas/DateFilterCondition"  
-              },
-              {
-                "$ref": "#/components/schemas/NumberFilterCondition"
-              },
-              {
-                "$ref": "#/components/schemas/RichTextFilterCondition"
-              }
-            ]
-          }
-        }
-      },
-      "MultiSelectFilterCondition": {
-        "type": "object",
-        "properties": {
-          "multi_select": {
-            "type": "object",
-            "properties": {
-              "contains": {
-                "type": "string"
-              },
-              "does_not_contain": {
-                "type": "string"  
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "NumberFilterCondition": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "type": "object",
-            "properties": {
-              "does_not_equal": {
-                "type": "number"
-              },
-              "equals": {
-                "type": "number"
-              },
-              "greater_than": {
-                "type": "number"
-              },
-              "greater_than_or_equal_to": {
-                "type": "number"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              },
-              "less_than": {
-                "type": "number"
-              },
-              "less_than_or_equal_to": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      },
-      "PeopleFilterCondition": {
-        "type": "object",
-        "properties": {
-          "people": {
-            "type": "object",
-            "properties": {
-              "contains": {
-                "type": "string"
-              },
-              "does_not_contain": {
-                "type": "string"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "RelationFilterCondition": {
-        "type": "object",
-        "properties": {
-          "relation": {
-            "type": "object",
-            "properties": {
-              "contains": {
-                "type": "string"
-              },
-              "does_not_contain": {
-                "type": "string"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "RichTextFilterCondition": {
-        "type": "object",
-        "properties": {
-          "rich_text": {
-            "type": "object",
-            "properties": {
-              "contains": {
-                "type": "string"
-              },
-              "does_not_contain": {
-                "type": "string"
-              },
-              "does_not_equal": {
-                "type": "string"
-              },
-              "ends_with": {
-                "type": "string"
-              },
-              "equals": {
-                "type": "string"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              },
-              "starts_with": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "RollupFilterCondition": {
-        "type": "object",
-        "properties": {
-          "rollup": {
-            "oneOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "any": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/CheckboxFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/DateFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/NumberFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/RichTextFilterCondition"  
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "every": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/CheckboxFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/DateFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/NumberFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/RichTextFilterCondition"
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "none": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/CheckboxFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/DateFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/NumberFilterCondition"
-                      },
-                      {
-                        "$ref": "#/components/schemas/RichTextFilterCondition"
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "$ref": "#/components/schemas/DateFilterCondition"
-              },
-              {
-                "$ref": "#/components/schemas/NumberFilterCondition"
-              }
-            ]
-          }
-        }
-      },
-      "SelectFilterCondition": {
-        "type": "object",
-        "properties": {
-          "select": {
-            "type": "object",
-            "properties": {
-              "equals": {
-                "type": "string"
-              },
-              "does_not_equal": {
-                "type": "string"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "StatusFilterCondition": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "object",
-            "properties": {
-              "equals": {
-                "type": "string"
-              },
-              "does_not_equal": {
-                "type": "string"
-              },
-              "is_empty": {
-                "type": "boolean"
-              },
-              "is_not_empty": {
-                "type": "boolean"
-              }
-            }
-          }
-        }
-      },
-      "TimestampFilterCondition": {
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "type": "string",
-            "enum": [
-              "created_time",
-              "last_edited_time"
-            ]
-          }
-        },
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/DateFilterCondition"
-          }
-        ]
-      },
-      "IDFilterCondition": {
-        "type": "object",
-        "properties": {
-          "unique_id": {
-            "type": "object",
-            "properties": {
-              "does_not_equal": {
-                "type": "number"
-              },
-              "equals": {
-                "type": "number"
-              },
-              "greater_than": {
-                "type": "number"
-              },
-              "greater_than_or_equal_to": {
-                "type": "number"
-              },
-              "less_than": {
-                "type": "number"
-              },
-              "less_than_or_equal_to": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  "required": [
+    "endpoint",
+    "method", 
+    "headers",
+    "contentType",
+    "body",
+    "response"
+  ],
+  "additionalProperties": false
 }
