@@ -1,0 +1,77 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/blocks/{block_id}": {
+      "get": {
+        "summary": "Retrieve a block",
+        "operationId": "retrieveBlock",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Block"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden - Integration does not have read content capabilities"
+          },
+          "404": {
+            "description": "Not Found - Block does not exist or integration does not have access"
+          },
+          "429": {
+            "description": "Too Many Requests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Block": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "example": "block"
+          },
+          "id": {
+            "type": "string"
+          },
+          "created_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_edited_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "has_children": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+JUMP TONotion APIIntroductionIntegration capabilitiesRequest limitsStatus codesVersioningChanges by versionObjectsBlockRich textPagePage propertiesDatabaseDatabase propertiesParentUserCommentUnfurl attribute (Link Previews)FileEmojiEndpointsAuthenticationCreate a tokenpostBlocksAppend block childrenpatchRetrieve a blockgetRetrieve block childrengetUpdate a blockpatchDelete a blockdeletePagesCreate a pagepostRetrieve a pagegetRetrieve a page property itemgetUpdate page propertiespatchArchive a pageDatabasesCreate a databasepostFilter database entriesSort database entriesQuery a databasepostRetrieve a databasegetUpdate a databasepatchUpdate database propertiesUsersList all usersgetRetrieve a usergetRetrieve your token's bot usergetCommentsCreate commentpostRetrieve commentsgetSearchSearch by titlepostSearch optimizations and limitationsCreate commentpost https://api.notion.com/v1/commentsCreates a comment in a page or existing discussion thread.Returns a comment object for the created comment.
+There are two locations where a new comment can be added with the public API:
+
+A page.
+An existing discussion thread.
+
+The request body will differ slightly depending on which type of comment is being added with this endpoint.
+To add a new comment to a page, a parent object with a page_id must be provided in the body params. 
+To add a new comment to an existing discussion thread, a discussion_id string must be provided in the body params. (Inline comments to start a new discussion thread cannot be created via the public API.)
+Either the parent.page_id or discussion_id parameter must be provided — not both.
+To see additional examples of creating a page or discussion comment and to learn more about comments in Notion, see the Working with comments guide.
+Errors
+Each Public API endpoint can return several possible error codes. See the Error codes section of the Status codes documentation for more information.
+📘Reminder: Turn on integration comment capabilitiesIntegration capabilities for reading and inserting comments are off by default.This endpoint requires an integration to have insert comment capabilities. Attempting to call this endpoint without insert comment capabilities will return an HTTP response with a 403 status code. For more information on integration capabilities, see the capabilities guide. To update your integration settings, visit the integration dashboard.

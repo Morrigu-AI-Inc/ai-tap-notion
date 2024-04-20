@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/pages/{page_id}": {
+      "patch": {
+        "summary": "Update page properties",
+        "description": "Updates the properties of a page in a database.",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the page to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "The updated page properties."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageObject"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied, integration lacks update content capabilities."
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PageObject": {
+        "type": "object",
+        "properties": {}
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

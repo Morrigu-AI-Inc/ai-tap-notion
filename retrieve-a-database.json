@@ -1,0 +1,158 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/databases/{database_id}": {
+      "get": {
+        "summary": "Retrieve a database",
+        "operationId": "retrieveDatabase",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Database"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Database": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "created_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_edited_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichText"
+            }
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PropertyConfiguration"
+            }
+          },
+          "parent": {
+            "$ref": "#/components/schemas/Parent"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      },
+      "RichText": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text"
+          },
+          "annotations": {
+            "$ref": "#/components/schemas/Annotations"
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        }
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "Annotations": {
+        "type": "object",
+        "properties": {
+          "bold": {
+            "type": "boolean"
+          },
+          "italic": {
+            "type": "boolean"  
+          },
+          "strikethrough": {
+            "type": "boolean"
+          },
+          "underline": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string"
+          }
+        }
+      },
+      "PropertyConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"  
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Parent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "database_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

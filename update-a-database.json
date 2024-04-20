@@ -1,0 +1,105 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/databases/{database_id}": {
+      "patch": {
+        "summary": "Update a database",
+        "description": "Updates the database object — the title, description, or properties — of a specified database. Returns the updated database object.",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDatabaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Database"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UpdateDatabaseRequest": {
+        "type": "object",
+        "properties": {
+          "properties": {
+            "$ref": "#/components/schemas/DatabaseProperties"
+          }
+        }
+      },
+      "DatabaseProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/PropertyConfiguration"
+        }
+      },
+      "PropertyConfiguration": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "title",
+              "rich_text",
+              "number",
+              "select",
+              "multi_select",
+              "date",
+              "people",
+              "file",
+              "checkbox",
+              "url",
+              "email",
+              "phone_number",
+              "relation"
+            ]
+          }
+        }
+      },
+      "Database": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/DatabaseProperties"
+          }
+        }
+      }
+    }
+  }
+}

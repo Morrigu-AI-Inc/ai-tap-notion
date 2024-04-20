@@ -1,0 +1,115 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/pages/{page_id}": {
+      "get": {
+        "summary": "Retrieve a page",
+        "description": "Retrieves a Page object using the specified ID.",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Page not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Page": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Object type"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the page"
+          },
+          "created_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time the page was created"
+          },
+          "last_edited_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time the page was last edited"
+          },
+          "parent": {
+            "$ref": "#/components/schemas/Parent"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the page is archived"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/PageProperties"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the page"
+          }
+        }
+      },
+      "Parent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of parent object"
+          },
+          "database_id": {
+            "type": "string",
+            "description": "ID of the parent database (if parent is a database)"
+          }
+        }
+      },
+      "PageProperties": {
+        "type": "object",
+        "description": "Dictionary of page properties",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/PropertyValue"
+        }
+      },
+      "PropertyValue": {
+        "type": "object",
+        "description": "Represents a property value, which is a list of rich text object, page reference, database reference, person reference, date, etc."
+      }
+    }
+  }
+}

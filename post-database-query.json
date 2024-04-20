@@ -1,0 +1,348 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/databases/{database_id}/query": {
+      "post": {
+        "summary": "Query a database",
+        "description": "Gets a list of Pages and/or Databases contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request.",
+        "parameters": [
+          {
+            "name": "database_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter_properties",
+            "in": "query",
+            "description": "Filter the properties of the database schema returned in the response body.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryDatabaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryDatabaseResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Database not found or integration does not have access"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "429": {
+            "description": "Request limit exceeded"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "QueryDatabaseRequest": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/Filter"
+          },
+          "sorts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Sort"
+            }
+          },
+          "start_cursor": {
+            "type": "string",
+            "description": "A cursor value used for pagination"
+          }
+        }
+      },
+      "QueryDatabaseResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Page"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "A cursor value used for pagination"
+          }
+        }
+      },
+      "Filter": {
+        "type": "object",
+        "properties": {
+          "and": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            }
+          },
+          "or": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            }
+          },
+          "property": {
+            "type": "string"
+          },
+          "checkbox": {
+            "$ref": "#/components/schemas/CheckboxFilter"
+          },
+          "contains": {
+            "type": "string"
+          }
+        }
+      },
+      "CheckboxFilter": {
+        "type": "object",
+        "properties": {
+          "equals": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "property": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "enum": [
+              "created_time",
+              "last_edited_time"
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ascending",
+              "descending"
+            ]
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": [
+              "page",
+              "database"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "created_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_edited_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parent": {
+            "$ref": "#/components/schemas/Parent"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PropertyValue"
+            }
+          }
+        }
+      },
+      "Parent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "page_id",
+              "database_id"
+            ]
+          },
+          "page_id": {
+            "type": "string"
+          },
+          "database_id": {
+            "type": "string"
+          }
+        }
+      },
+      "PropertyValue": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichText"
+            }
+          },
+          "rich_text": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RichText"
+            }
+          },
+          "number": {
+            "type": "number"
+          },
+          "checkbox": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Relation"
+            }
+          },
+          "date": {
+            "$ref": "#/components/schemas/Date"
+          }
+        }
+      },
+      "RichText": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "mention",
+              "equation"
+            ]
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text"
+          },
+          "annotations": {
+            "$ref": "#/components/schemas/Annotations"
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "equation": {
+            "$ref": "#/components/schemas/Equation"
+          }
+        }
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "Annotations": {
+        "type": "object",
+        "properties": {
+          "bold": {
+            "type": "boolean"
+          },
+          "italic": {
+            "type": "boolean"
+          },
+          "strikethrough": {
+            "type": "boolean"
+          },
+          "underline": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string"
+          }
+        }
+      },
+      "Equation": {
+        "type": "object",
+        "properties": {
+          "expression": {
+            "type": "string"
+          }
+        }
+      },
+      "Relation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "Date": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_zone": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

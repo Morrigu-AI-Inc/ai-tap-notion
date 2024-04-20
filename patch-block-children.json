@@ -1,0 +1,61 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/blocks/{block_id}/children": {
+      "patch": {
+        "summary": "Append block children",
+        "description": "Creates and appends new children blocks to the parent block_id specified. Blocks can be parented by other blocks, pages, or databases.",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden - Integration does not have insert content capabilities"
+          },
+          "404": {
+            "description": "Block not found or integration does not have access"
+          },
+          "429": {
+            "description": "Request limits exceeded"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppendBlockChildren"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppendBlockChildren": {
+        "type": "object",
+        "properties": {
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Block"
+            }
+          }
+        }
+      },
+      "Block": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

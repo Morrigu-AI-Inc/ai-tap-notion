@@ -1,0 +1,114 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "2022-06-28"
+  },
+  "paths": {
+    "/blocks": {
+      "post": {
+        "summary": "Append block children",
+        "responses": {}
+      }
+    },
+    "/blocks/{block_id}": {
+      "get": {
+        "summary": "Retrieve a block",
+        "responses": {}
+      },
+      "patch": {
+        "summary": "Update a block",
+        "responses": {}
+      },
+      "delete": {
+        "summary": "Delete a block",
+        "responses": {}
+      }
+    },
+    "/blocks/{block_id}/children": {
+      "get": {
+        "summary": "Retrieve block children",
+        "responses": {}
+      }
+    },
+    "/pages": {
+      "post": {
+        "summary": "Create a page",
+        "responses": {}
+      }
+    },
+    "/pages/{page_id}": {
+      "get": {
+        "summary": "Retrieve a page",
+        "responses": {}
+      }
+    },
+    "/pages/{page_id}/properties/{property_id}": {
+      "get": {
+        "summary": "Retrieve a page property item",
+        "responses": {}        
+      },
+      "patch": {
+        "summary": "Update page properties",
+        "responses": {}
+      }
+    },
+    "/databases": {
+      "post": {
+        "summary": "Create a database",
+        "responses": {}
+      }
+    },
+    "/databases/{database_id}": {
+      "get": {
+        "summary": "Retrieve a database",
+        "responses": {}
+      },
+      "patch": {
+        "summary": "Update a database",
+        "responses": {}
+      }
+    },
+    "/databases/{database_id}/query": {
+      "post": {
+        "summary": "Query a database",
+        "responses": {}
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List all users",
+        "responses": {}
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "summary": "Retrieve a user",
+        "responses": {}
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Retrieve your token's bot user",
+        "responses": {}
+      }
+    },
+    "/comments": {
+      "post": {
+        "summary": "Create a comment",
+        "responses": {}
+      },
+      "get": {
+        "summary": "Retrieve comments", 
+        "responses": {}
+      }
+    },
+    "/search": {
+      "post": {
+        "summary": "Search by title",
+        "responses": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/users": {
+      "get": {
+        "summary": "List all users",
+        "description": "Returns a paginated list of Users for the workspace. The response may contain fewer than page_size of results. Guests are not included in the response.",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "403": {
+            "description": "Forbidden - Requires user information capabilities"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+JUMP TONotion APIIntroductionIntegration capabilitiesRequest limitsStatus codesVersioningChanges by versionObjectsBlockRich textPagePage propertiesDatabaseDatabase propertiesParentUserCommentUnfurl attribute (Link Previews)FileEmojiEndpointsAuthenticationCreate a tokenpostBlocksAppend block childrenpatchRetrieve a blockgetRetrieve block childrengetUpdate a blockpatchDelete a blockdeletePagesCreate a pagepostRetrieve a pagegetRetrieve a page property itemgetUpdate page propertiespatchArchive a pageDatabasesCreate a databasepostFilter database entriesSort database entriesQuery a databasepostRetrieve a databasegetUpdate a databasepatchUpdate database propertiesUsersList all usersgetRetrieve a usergetRetrieve your token's bot usergetCommentsCreate commentpostRetrieve commentsgetSearchSearch by titlepostSearch optimizations and limitationsRetrieve a blockget https://api.notion.com/v1/blocks/{block_id}Retrieves a Block object using the ID specified.
+If the block returned contains the key has_children: true, use the Retrieve block children endpoint to get the list of children.
+To retrieve page content for a specific page, use Retrieve block children and set the page ID as the block_id.
+For more information, read the Working with page content guide.
+📘Integration capabilitiesThis endpoint requires an integration to have read content capabilities. Attempting to call this API without read content capabilities will return an HTTP response with a 403 status code. For more information on integration capabilities, see the capabilities guide.
+Errors
+Returns a 404 HTTP response if the block doesn't exist, or if the integration doesn't have access to the block.
+Returns a 400 or 429 HTTP response if the request exceeds the request limits.
+Note: Each Public API endpoint can return several possible error codes. See the Error codes section of the Status codes documentation for more information.

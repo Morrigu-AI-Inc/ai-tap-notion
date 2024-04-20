@@ -1,0 +1,87 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/pages/{page_id}/properties/{property_id}": {
+      "get": {
+        "summary": "Retrieve a page property item",
+        "operationId": "getPagePropertyItem",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "property_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PropertyItemResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "The object type",
+            "example": "property_item"
+          },
+          "id": {
+            "type": "string",
+            "description": "The Notion ID of the property item"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the property"
+          },
+          "value": {
+            "description": "The value of the property item"
+          },
+          "next_url": {
+            "type": "string",
+            "description": "The URL for the next paginated result (if applicable)"
+          }
+        }
+      }
+    }
+  }
+}

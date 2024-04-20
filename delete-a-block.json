@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Notion API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/blocks/{block_id}": {
+      "delete": {
+        "summary": "Delete a block",
+        "operationId": "deleteBlock",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the block to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "403": {
+            "description": "Forbidden - Integration lacks update content capabilities"
+          },
+          "404": {
+            "description": "Block not found or integration does not have access"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        },
+        "description": "Sets a Block object, including page blocks, to archived: true using the specified ID. In the Notion UI, this moves the block to the \"Trash\" where it can still be accessed and restored.\n\nTo restore the block, use the Update a block or Update page APIs respectively.\n\nThis endpoint requires the integration to have update content capabilities. Attempting to call this API without update content capabilities will return an HTTP 403 response.\n\nReturns 404 if the block doesn't exist, or if the integration doesn't have access to the block.\n\nReturns 400 or 429 if the request exceeds the request limits.",
+        "tags": [
+          "Blocks"
+        ]
+      }
+    }
+  }
+}
